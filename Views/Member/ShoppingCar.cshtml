@@ -1,0 +1,101 @@
+﻿@model IEnumerable<ShoppingWebsite.Models.table_OrderDetail>
+
+@{
+    ViewBag.Title = "會員購物車清單";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+}
+
+<h2>會員購物車清單</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderGuid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsApproved)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderGuid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsApproved)
+            </td>
+            <td>
+                @Html.ActionLink("編輯商品", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("刪除商品", "DeleteCar", new { id = item.Id }, new { @class = "btn btn-danger", onclick = $"return confirm('確定放棄購買 {item.Name} 嗎?')" })
+            </td>
+        </tr>
+    }
+
+</table>
+@using (Html.BeginForm("ShoppingCar", "Member", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <h4>填寫訂單收件人資料</h4>
+        <hr />
+        <div class="form-group">
+            <span class="control-label col-md-2">收件人姓名</span>
+            <div class="col-md-10">
+                @Html.TextBox("Reciever", TempData["Reciever"], new { id = "Reciever", required = "required", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <span class="control-label col-md-2">收件人信箱</span>
+            <div class="col-md-10">
+                @Html.TextBox("Email", TempData["Email"], new { id = "Email", required = "required", @class = "form-control", type = "email" })
+            </div>
+        </div>
+        <div class="form-group">
+            <span class="control-label col-md-2">收件人地址</span>
+            <div class="col-md-10">
+                @Html.TextBox("Address", null, new { id = "Address", required = "required", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="確認訂購" class="btn btn-primary" />
+            </div>
+            <div class="text-danger">
+                @ViewBag.Message
+            </div>
+        </div>
+    </div>
+}
+
