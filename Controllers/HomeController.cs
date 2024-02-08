@@ -8,9 +8,14 @@ using System.Web.Security;
 
 namespace ShoppingWebsite.Controllers
 {
+    //修改路由名稱，但需要對應Action Route才能一起改變使用
+    [RoutePrefix("Main")]
     public class HomeController : Controller
     {
         dbShoppingCarEntities db = new dbShoppingCarEntities();
+
+        [Route()]
+        [Route("Index")]
         public ActionResult Index()
         {
             var products = db.table_Product.OrderByDescending(x => x.Id).ToList();
