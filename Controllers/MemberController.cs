@@ -27,6 +27,49 @@ namespace ShoppingWebsite.Controllers
             return RedirectToAction("Login", "Home");
         }
 
+
+        public  ActionResult MemberEdit()
+        {
+            string userId = User.Identity.Name;
+
+            var member = db.table_Member.Where(m=>m.UserId == userId).FirstOrDefault();
+
+            return View(member);
+        }
+
+        [HttpPost]
+        public ActionResult MemberEdit(table_Member member)
+        {
+            string userId = User.Identity.Name;
+            if (!ModelState.IsValid)
+            {
+                return View(member);
+            }
+
+
+            var temp = db.table_Member.Where(m=>m.UserId == userId).FirstOrDefault();
+
+            temp.UserId = member.UserId;
+            temp.Name = member.Name;
+            temp.Password = member.Password;
+            temp.Email = member.Email;
+            //排除自己的資料，解決因為自己該筆資料重複帳號的問題
+            var hasMember = db.table_Member.Where(m => m.UserId == temp.UserId).FirstOrDefault();
+            /*if (hasMember != null)
+            {
+                ViewBag.Message = "帳號已重複，請重新設定";
+
+                return View(member);
+            }*/
+                
+            db.SaveChanges();
+
+            Session["Welcome"] = $"{hasMember.Name},您好";
+
+            FormsAuthentication.RedirectFromLoginPage(hasMember.UserId, true);
+
+            return RedirectToAction("Index");
+        }
         public ActionResult ShoppingCar()
         {
             string userId = User.Identity.Name;

@@ -247,6 +247,7 @@
     <Content Include="Views\Member\OrderList.cshtml" />
     <Content Include="Views\Member\OrderDetail.cshtml" />
     <Content Include="Views\Shared\_ProductList.cshtml" />
+    <Content Include="Views\Member\MemberEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Test\" />
